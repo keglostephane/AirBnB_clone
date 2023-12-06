@@ -21,3 +21,8 @@ class FileStorage:
     def all(self):
         """ retrieve all objects """
         return self.__objects
+
+    def new(self, obj):
+        """ a new object in __objects dict """
+        key = f"{ obj.__class__.__name__}.{obj.id}"
+        self.__objects[key] = obj
