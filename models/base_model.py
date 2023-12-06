@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """A BaseModel module
 """
+import models
 import json
 import uuid
 from datetime import datetime
@@ -30,6 +31,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self):
         """Human readable representation"""
@@ -38,6 +40,7 @@ class BaseModel:
     def save(self):
         """Update the last modification date"""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values
