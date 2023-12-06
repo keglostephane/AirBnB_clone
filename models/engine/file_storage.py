@@ -31,3 +31,15 @@ class FileStorage:
         """ serializes objects to the Json file """
         with open(self.__file_path, 'w') as fp:
             json.dump({k: v.to_dict() for k, v in self.__objects.items()}, fp)
+
+    def reload(self):
+        """ deserializes the Json file to _objects """
+        try:
+            with open(self.__file_path, 'r') as fp:
+                objects = json.load(fp)
+                for key, value in objects.items():
+                    cls_name, object_id = key.split(".")
+                    if cls_name == "BaseModel":
+                        self.__objects[key] = BaseModel(**value)
+        except FileNotFoundError:
+            pass
