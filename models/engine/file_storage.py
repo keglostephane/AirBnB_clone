@@ -17,3 +17,7 @@ class FileStorage:
         """ initializer """
         self.__file_path = "file.json"
         self.__objects = {}
+
+    def all(self):
+        """ retrieve all objects """
+        return self.__objects
