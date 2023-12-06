@@ -26,7 +26,6 @@ class BaseModel:
                         setattr(self, attr, datetime.fromisoformat(value))
                     else:
                         setattr(self, attr, value)
-
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
