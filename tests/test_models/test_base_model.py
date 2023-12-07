@@ -27,9 +27,9 @@ class testBaseModel(unittest.TestCase):
 
     def testBaseModelInstanceAttributesType(self):
         """Test BaseModel instance attributes type."""
-        self.assertTrue(type(self.model.id), str)
-        self.assertTrue(type(self.model.created_at), datetime)
-        self.assertTrue(type(self.model.updated_at), datetime)
+        self.assertIs(type(self.model.id), str)
+        self.assertIs(type(self.model.created_at), datetime)
+        self.assertIs(type(self.model.updated_at), datetime)
 
     def testBaseModelInstanceStringRepresentation(self):
         """Test BaseModel instance human readable representation."""
@@ -68,3 +68,72 @@ class testBaseModel(unittest.TestCase):
                     'updated_at': '2023-12-05T20:28:09.800791',
                     'name': 'model'}
         self.assertEqual(result, expected)
+        self.assertIs(type(self.model.to_dict()), dict)
+
+    def testBaseModelInit(self):
+        """Test BaseModel instance initialization."""
+        id = '6262702c-96c8-4532-8d74-e977a61a90c9'
+        created = datetime(2023, 12, 6, 21, 25, 48, 820626)
+        updated = datetime(2023, 12, 6, 21, 25, 50, 820621)
+        name = 'model_1'
+
+        # only positional arguments
+        model_1 = BaseModel(id, created, updated, name)
+        self.assertNotEqual(model_1.id, id)
+        self.assertNotEqual(model_1.created_at, created)
+        self.assertNotEqual(model_1.updated_at, updated)
+        self.assertNotIn('name', model_1.__dict__)
+
+        # only keyword arguments
+        model_2 = BaseModel(id=id, created_at=created.isoformat(),
+                            updated_at=updated.isoformat(),
+                            name='model_2', __class__='Base')
+        self.assertEqual(model_2.id, id)
+        self.assertEqual(model_2.created_at, created)
+        self.assertIs(type(model_2.created_at), datetime)
+        self.assertIs(type(model_2.updated_at), datetime)
+        self.assertEqual(model_2.updated_at, updated)
+        self.assertEqual(model_2.name, 'model_2')
+        self.assertNotIn('__class__', model_2.__dict__)
+
+        # positional and keyword arguments
+        model_3 = BaseModel(id, created, updated_at=updated.isoformat(),
+                            name='model_3')
+        self.assertNotIn('id', model_3.__dict__)
+        self.assertNotIn('created_at', model_3.__dict__)
+        self.assertIn('updated_at', model_3.__dict__)
+        self.assertIn('name', model_3.__dict__)
+
+        # invalid date,time format
+        self.assertRaises(TypeError, BaseModel,
+                          created_at=created,
+                          updated_at=updated)
+
+        with self.assertRaises(ValueError) as error:
+            BaseModel(created_at='2023-12-06')
+            self.assertEqual(error.exception,
+                             ("time data '2023-12-06' does not match "
+                              "format '%Y-%m-%dT%H:%M:%S.%f'"))
+        with self.assertRaises(ValueError) as error:
+            BaseModel(created_at='2023-12-06 21')
+            self.assertEqual(error.exception,
+                             ("time data '2023-12-06 21' does not match "
+                              "format '%Y-%m-%dT%H:%M:%S.%f'"))
+        with self.assertRaises(ValueError) as error:
+            BaseModel(created_at='2023-12-06T21:30:15')
+            self.assertEqual(error.exception,
+                             ("time data '2023-12-06T21:30:15' does not match "
+                              "format '%Y-%m-%dT%H:%M:%S.%f'"))
+
+        # correct date,time format
+        model_4 = BaseModel(created_at='2023-06-08T09:12:30.5')
+        self.assertIn('created_at', model_4.__dict__)
+        self.assertIs(type(model_4.created_at), datetime)
+        self.assertEqual(model_4.created_at,
+                         datetime.datetime(2023, 6, 8, 9, 12, 30, 500000))
+
+        # recreate a BaseModel object from a dictionary
+        model_dict = self.model.to_dict()
+        model_5 = BaseModel(**model_dict)
+        self.assertEqual(model_5.to_dict(), model_dict)
+        self.assertIsNot(model_5, self.model)
