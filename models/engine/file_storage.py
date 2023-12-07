@@ -3,6 +3,7 @@
 """
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -41,5 +42,7 @@ class FileStorage:
                     cls_name, object_id = key.split(".")
                     if cls_name == "BaseModel":
                         self.__objects[key] = BaseModel(**value)
+                    elif cls_name == "User":
+                        self.__objects[key] = User(**value)
         except FileNotFoundError:
             pass
