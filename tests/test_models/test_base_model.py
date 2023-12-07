@@ -130,7 +130,7 @@ class testBaseModel(unittest.TestCase):
         self.assertIn('created_at', model_4.__dict__)
         self.assertIs(type(model_4.created_at), datetime)
         self.assertEqual(model_4.created_at,
-                         datetime.datetime(2023, 6, 8, 9, 12, 30, 500000))
+                         datetime(2023, 6, 8, 9, 12, 30, 500000))
 
         # recreate a BaseModel object from a dictionary
         model_dict = self.model.to_dict()
