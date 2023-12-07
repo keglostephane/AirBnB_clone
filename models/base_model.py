@@ -24,7 +24,8 @@ class BaseModel:
             for attr, value in kwargs.items():
                 if attr != "__class__":
                     if attr in ["created_at", "updated_at"]:
-                        setattr(self, attr, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                        dformat = "%Y-%m-%dT%H:%M:%S.%f"
+                        setattr(self, attr, datetime.strptime(value, dformat))
                     else:
                         setattr(self, attr, value)
         else:
