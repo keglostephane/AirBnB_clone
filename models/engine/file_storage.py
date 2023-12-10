@@ -19,10 +19,8 @@ class FileStorage:
     :param __objects: dictionary that will store all objects
     :type __objects: str
     """
-    def __init__(self):
-        """ initializer """
-        self.__file_path = "file.json"
-        self.__objects = {}
+    __file_path = 'file.json'
+    __objects = {}
 
     def all(self):
         """ retrieve all objects """
