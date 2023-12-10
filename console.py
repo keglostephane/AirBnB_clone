@@ -52,6 +52,7 @@ class HBNBCommand(cmd.Cmd):
                     elif cls == 'User':
                         user = User()
                         storage.save()
+                        print(user.id)
                 else:
                     print(f"*** Unknown syntax: create {args}")
 
