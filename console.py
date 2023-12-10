@@ -5,13 +5,14 @@ import cmd
 import sys
 import os
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """AirBnB clone console"""
     prompt = '(hbnb)'
-    cls_list = ['BaseModel']
+    cls_list = ['BaseModel', 'User']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -46,9 +47,11 @@ class HBNBCommand(cmd.Cmd):
                 if len(args_list) == 1:
                     if cls == 'BaseModel':
                         model = BaseModel()
-                        storage.new(model)
                         storage.save()
                         print(model.id)
+                    elif cls == 'User':
+                        user = User()
+                        storage.save()
                 else:
                     print(f"*** Unknown syntax: create {args}")
 
