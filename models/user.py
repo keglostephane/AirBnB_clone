@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ User module
 """
+import models
 from models.base_model import BaseModel
 
 
@@ -20,3 +21,15 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """Initializer"""
+        if kwargs:
+            super().__init__(*args, **kwargs)
+        else:
+            super().__init__(*args, **kwargs)
+            self.first_name = User.first_name
+            self.last_name = User.last_name
+            self.email = User.email
+            self.password = User.password
+            models.storage.new(self)
