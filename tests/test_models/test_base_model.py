@@ -2,7 +2,9 @@
 """Unittest for BaseModel class
 """
 import unittest
+import json
 from models.base_model import BaseModel
+from models import storage
 from io import StringIO
 from datetime import datetime
 from unittest.mock import patch
@@ -137,3 +139,21 @@ class testBaseModel(unittest.TestCase):
         model_5 = BaseModel(**model_dict)
         self.assertEqual(model_5.to_dict(), model_dict)
         self.assertIsNot(model_5, self.model)
+
+    def testBaseModelLinkToFileStorage(self):
+        """Test the linking of BaseModel to FileStorage"""
+        # test if BaseModel instances not created from a dictionary
+        # representation are added to storage list of objects
+        model_1 = BaseModel(created_at='2022-05-21T17:12:05.12',
+                            name='model_1')
+        model_2 = BaseModel()
+        self.assertIn(model_2, storage.all().values())
+        self.assertNotIn(model_1, storage.all().values())
+
+        # test if BaseModel instances save() method save to json file
+        filename = 'file.json'
+        model_3 = BaseModel()
+        model_3.save()
+        with open(filename, encoding='utf-8') as json_file:
+            json_dict_objects = json.load(json_file)
+        self.assertIn(model_3.to_dict(), json_dict_objects.values())
