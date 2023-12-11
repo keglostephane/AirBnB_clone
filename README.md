@@ -5,8 +5,9 @@ AirBnB platform.
 It does not aim to reproduce a fully functional AirBnB platform but serves
 only as education purpose. **Use at your own RISK!**
 
-AirBnB project is an important part of ALX Software Engineering Program as it
-help to evaluate and demonstrate effective skills in Python language.
+AirBnB project is an important part of [ALX](https://www.alxafrica.com/)
+Software Engineering Program as it help to evaluate and demonstrate effective
+skills in Python language.
 
 ## AirBnB clone - The console
 
