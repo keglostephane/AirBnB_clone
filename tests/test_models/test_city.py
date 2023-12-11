@@ -14,6 +14,7 @@ class testCity(unittest.TestCase):
 
     def tearDown(self):
         """Destroy City instance after tests"""
+        del self.city
 
     def testCityClassPublicAttributes(self):
         """Test if City class have public attributes"""

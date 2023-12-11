@@ -14,6 +14,7 @@ class testState(unittest.TestCase):
 
     def tearDown(self):
         """Destroy State instance after tests"""
+        del self.state
 
     def testStateClassPublicAttributes(self):
         """Test if State class have public attributes"""

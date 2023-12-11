@@ -14,6 +14,7 @@ class testUser(unittest.TestCase):
 
     def tearDown(self):
         """Destroy User instance after tests"""
+        del self.user
 
     def testUserClassPublicAttributes(self):
         """Test if User class have public attributes"""
