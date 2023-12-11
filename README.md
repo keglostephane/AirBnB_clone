@@ -33,8 +33,8 @@ execution.
 
 ### Requirements:
 
-- Python3.8 or above
-- Command line interpreter : Bash or others
+- *Python3.8* or above
+- Command line interpreter : *Bash* or others
 
 ### Instrunctions
 
@@ -61,7 +61,7 @@ execution.
   ```
 
 
-### Documentation
+### Documentation
 
 List of console commands:
 
