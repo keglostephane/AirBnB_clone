@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """ User module
+
+User: a class that define a user
 """
-import models
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """Define all common attributes and methods for child classes.
+    """Define a user.
 
     :param email: user's email
     :type email: str
