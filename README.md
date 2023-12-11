@@ -1,9 +1,12 @@
 # Welcome to AirBnB clone project
 
-This project is a series of mini projets as an attempt to recreate a clone of AirBnB platform.
-It does not aim to reproduce a fully functional AirBnB platform but serves only as education purpose. **Use at your own RISK**
+This project is a series of mini projets as an attempt to recreate a clone of
+AirBnB platform.
+It does not aim to reproduce a fully functional AirBnB platform but serves
+only as education purpose. **Use at your own RISK!**
 
-AirBnB project is an important part of ALX Software Engineering Program as it help to evaluate and demonstrate effective skills in Python language.
+AirBnB project is an important part of ALX Software Engineering Program as it
+help to evaluate and demonstrate effective skills in Python language.
 
 ## AirBnB clone - The console
 
@@ -12,10 +15,11 @@ It's the first in the series of mini project to create a AirBnB platform.
 In this project, we will create:
 
 - A model (class) to define each entity (object) and its associated data.
-- A modular storage engine to store and retrieve our entities at each program execution.
+- A modular storage engine to store and retrieve our entities at each program
+execution.
 - A command line interface (the console) to ease the management of our entities.
 
-**Important concepts covered in this project**:
+### Important concepts covered in this project
 
 - Object Oriented Programming (classes, methods, inheritance , ...)
 - Positional and Keyword arguments
@@ -27,35 +31,35 @@ In this project, we will create:
 - Command Line Interface
 - Modules: **json**, **datime**, **cmd**
 
-### Requirements:
+### Requirements:
 
 - Python3.8 or above
 - Command line interpreter : Bash or others
 
-### Instrunctions
+### Instrunctions
 
 1. Clone the repository
-  
+
   ```bash
   git clone https://github.com/keglostephane/AirBnB_clone.git
   ```
-  
+
 2. Launch the console
-  
+
   ```bash
   cd ./AirBnB_clone
   ```
-  
+
   ```bash
   ./console.py
   ```
-  
+
   The console is ready to accept commands:
-  
+
   ```
   (hbnb)
   ```
-  
+
 
 ### Documentation
 
@@ -76,85 +80,85 @@ List of Classes:
 `BaseModel`: Base Class
 
 - Attributes :
-  
+
   - `id` (uuid.uuid4)
-    
+
   - `created_at` (datetime.datetime)
-    
+
   - `updated_at` (datetime.dateime)
-    
+
 
 `User`: Define a user
 
 - Attributes:
-  
+
   - `last_name` (str)
-    
+
   - `first_name` (str)
-    
+
   - `email` (str)
-    
+
   - `password` (str)
-    
+
 
 `State`: Define a state
 
 - Attributes:
-  
+
   - `name` (str)
 
 `City` : Define a city
 
 - Attributes:
-  
+
   - `state_id` (str)
-    
+
   - `name` (str)
-    
+
 
 `Amenity`: Define an amenity
 
 - Attributes:
-  
+
   - `name` (str)
 
 `Place` : Define a place
 
 - Attributes:
-  
+
   - `city_id` (str)
-    
+
   - `user_id` (str)
-    
+
   - `name` (str)
-    
+
   - `description` (str)
-    
+
   - `number_rooms` (int)
-    
+
   - `number_bathrooms` (int)
-    
+
   - `max_guest` (int)
-    
+
   - `price_by_night` (int)
-    
+
   - `latitude` (float)
-    
+
   - `longitude` (float)
-    
+
   - `amenity_ids` (list)
-    
+
 
 `Review` : Define a review
 
 - Attributes
-  
+
   - `place_id` (str)
-    
+
   - `user_id` (str)
-    
+
   - `text` (str)
-    
+
 
 ### Usage
 
@@ -229,7 +233,7 @@ update User 0aef86f5-0ac4-486c-8fdb-57db61b197c6 first_name John
 ** no instance found **
 ```
 
-### Contributors
+### Contributors
 
 [keglostephane](https://github.com/keglostephane)
 
