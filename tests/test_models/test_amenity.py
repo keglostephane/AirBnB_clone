@@ -14,6 +14,7 @@ class testAmenity(unittest.TestCase):
 
     def tearDown(self):
         """Destroy Amenity instance after tests"""
+        del self.amenity
 
     def testAmenityClassPublicAttribute(self):
         """Test if Amenity class have public attributes"""
