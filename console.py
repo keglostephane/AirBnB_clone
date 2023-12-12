@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
-    cls_methods = ['all', 'count', 'show']
+    cls_methods = ['all', 'count', 'show', 'destroy']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -44,7 +44,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if len(args_list) > 1:
                     method = args_list[1].translate(trans_dict)
-                    if method.startswith('show'):
+                    if method.startswith('show') or\
+                       method.startswith('destroy'):
                         args_list.extend(args_list[1].split('('))
                         del args_list[1]
                         method = args_list[1]
@@ -75,10 +76,10 @@ class HBNBCommand(cmd.Cmd):
                                     print(total)
                                 else:
                                     return super().default(line)
-                            if method == 'show':
+                            if method in ('show', 'destroy'):
                                 return super().default(line)
                         elif len(args_list) > 2:
-                            if method == 'show':
+                            if method in ('show', 'destroy'):
                                 if len(args_list) == 3:
                                     if args_list[2] == ')' or\
                                        not args_list[2].endswith(')'):
@@ -95,7 +96,11 @@ class HBNBCommand(cmd.Cmd):
                                                 key = f"{cls}.{cls_id}"
                                                 objs_dict = storage.all()
                                                 if key in objs_dict.keys():
-                                                    print(objs_dict[key])
+                                                    if method == 'show':
+                                                        print(objs_dict[key])
+                                                    elif method == 'destroy':
+                                                        del objs_dict[key]
+                                                        storage.save()
                                                 else:
                                                     print('** no instance '
                                                           'found **')
