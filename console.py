@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
-    cls_methods = ['all']
+    cls_methods = ['all', 'count']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -41,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
             if len(args_list) > 1:
                 method = args_list[1]
                 if method in HBNBCommand.cls_methods:
-                    if method in ('all'):
+                    if method in ('all', 'count'):
                         if len(args_list) == 2:
                             if method == 'all':
                                 objs_dict = storage.all()
@@ -54,6 +54,13 @@ class HBNBCommand(cmd.Cmd):
                                     print(obj, end='')
                                 print(str_list[-1], end='')
                                 print(']')
+                            elif method == 'count':
+                                total = 0
+                                objs_dict = storage.all()
+                                for key in objs_dict.keys():
+                                    if cls in key:
+                                        total += 1
+                                print(total)
                             else:
                                 return super().default(line)
                         else:
