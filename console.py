@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
-    cls_methods = ['all', 'count']
+    cls_methods = ['all', 'count', 'show']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -65,14 +65,28 @@ class HBNBCommand(cmd.Cmd):
                                 return super().default(line)
                         else:
                             return super().default(line)
+                    elif method in ('show'):
+                        if len(args_list) > 2:
+                            cls_id = args_list[2]
+                            if len(args_list) == 3:
+                                key = f"{cls}.{cls_id}"
+                                objs_dict = storage.all()
+                                if key in objs_dict.keys():
+                                    obj = objs_dict[key].__str__()
+                                    if method == 'show':
+                                        print(obj)
+                                else:
+                                    print('** no instance found **')
+                            else:
+                                return super().default(line)
+                        else:
+                            return super().default(line)
                     else:
                         return super().default(line)
                 else:
                     return super().default(line)
             else:
                 return super().default(line)
-        else:
-            return super().default(line)
 
     def do_EOF(self, line):
         """EOF command to exit the program
