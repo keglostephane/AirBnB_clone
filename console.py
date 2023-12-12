@@ -92,9 +92,13 @@ class HBNBCommand(cmd.Cmd):
                                             if cls_id[0] == '"' and\
                                                cls_id[-1] == '"':
                                                 cls_id = cls_id.strip('"')
-                                                obj = storage.all()[
-                                                    f"{cls}.{cls_id}"]
-                                                print(obj)
+                                                key = f"{cls}.{cls_id}"
+                                                objs_dict = storage.all()
+                                                if key in objs_dict.keys():
+                                                    print(objs_dict[key])
+                                                else:
+                                                    print('** no instance '
+                                                          'found **')
                                             else:
                                                 return super().default(line)
                                 else:
