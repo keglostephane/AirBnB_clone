@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
-    cls_methods = ['all', 'count']
+    cls_methods = ['all', 'count', 'show']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -44,6 +44,10 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if len(args_list) > 1:
                     method = args_list[1].translate(trans_dict)
+                    if method.startswith('show'):
+                        args_list.extend(args_list[1].split('('))
+                        del args_list[1]
+                        method = args_list[1]
                     if method not in HBNBCommand.cls_methods:
                         return super().default(line)
                     else:
@@ -69,6 +73,30 @@ class HBNBCommand(cmd.Cmd):
                                         if cls in key:
                                             total += 1
                                     print(total)
+                                else:
+                                    return super().default(line)
+                            if method == 'show':
+                                return super().default(line)
+                        elif len(args_list) > 2:
+                            if method == 'show':
+                                if len(args_list) == 3:
+                                    if args_list[2] == ')' or\
+                                       not args_list[2].endswith(')'):
+                                        return super().default(line)
+                                    else:
+                                        method_args = args_list[2].split(')')
+                                        if len(method_args) != 2:
+                                            return super().default(line)
+                                        else:
+                                            cls_id = method_args[0]
+                                            if cls_id[0] == '"' and\
+                                               cls_id[-1] == '"':
+                                                cls_id = cls_id.strip('"')
+                                                obj = storage.all()[
+                                                    f"{cls}.{cls_id}"]
+                                                print(obj)
+                                            else:
+                                                return super().default(line)
                                 else:
                                     return super().default(line)
                 else:
