@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
-    cls_methods = ['all', 'count', 'show', 'destroy']
+    cls_methods = ['all']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -32,84 +32,38 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Method called when the command prefix is not recognize"""
-        trans_dict = line.maketrans({'(': '', ')': ''})
-        command = line.split(' ')
+        trans_table = line.maketrans('.(\")', '    ')
         str_list = []
+        args_list = line.translate(trans_table).split()
+        cls = args_list[0]
 
-        if len(command) == 1:
-            args_list = command[0].split('.')
-            cls = args_list[0]
-            if cls not in HBNBCommand.cls_list:
-                return super().default(line)
-            else:
-                if len(args_list) > 1:
-                    method = args_list[1].translate(trans_dict)
-                    if method.startswith('show') or\
-                       method.startswith('destroy'):
-                        args_list.extend(args_list[1].split('('))
-                        del args_list[1]
-                        method = args_list[1]
-                    if method not in HBNBCommand.cls_methods:
-                        return super().default(line)
-                    else:
+        if cls in HBNBCommand.cls_list:
+            if len(args_list) > 1:
+                method = args_list[1]
+                if method in HBNBCommand.cls_methods:
+                    if method in ('all'):
                         if len(args_list) == 2:
                             if method == 'all':
-                                if args_list[1] == 'all()':
-                                    for key in storage.all().keys():
-                                        if cls in key:
-                                            str_list.append(
-                                                storage.all()[key].__str__())
-                                    print('[', end='')
-                                    for obj in str_list[:-1]:
-                                        print(obj, end='')
-                                        print(', ', end='')
-                                    print(str_list[-1], end='')
-                                    print(']')
-                                else:
-                                    return super().default(line)
-                            if method == 'count':
-                                if args_list[1] == 'count()':
-                                    total = 0
-                                    for key in storage.all().keys():
-                                        if cls in key:
-                                            total += 1
-                                    print(total)
-                                else:
-                                    return super().default(line)
-                            if method in ('show', 'destroy'):
+                                objs_dict = storage.all()
+                                for key in objs_dict.keys():
+                                    if cls in key:
+                                        str_list.append(
+                                            objs_dict[key].__str__())
+                                print('[', end='')
+                                for obj in str_list[:-1]:
+                                    print(obj, end='')
+                                print(str_list[-1], end='')
+                                print(']')
+                            else:
                                 return super().default(line)
-                        elif len(args_list) > 2:
-                            if method in ('show', 'destroy'):
-                                if len(args_list) == 3:
-                                    if args_list[2] == ')' or\
-                                       not args_list[2].endswith(')'):
-                                        return super().default(line)
-                                    else:
-                                        method_args = args_list[2].split(')')
-                                        if len(method_args) != 2:
-                                            return super().default(line)
-                                        else:
-                                            cls_id = method_args[0]
-                                            if cls_id[0] == '"' and\
-                                               cls_id[-1] == '"':
-                                                cls_id = cls_id.strip('"')
-                                                key = f"{cls}.{cls_id}"
-                                                objs_dict = storage.all()
-                                                if key in objs_dict.keys():
-                                                    if method == 'show':
-                                                        print(objs_dict[key])
-                                                    elif method == 'destroy':
-                                                        del objs_dict[key]
-                                                        storage.save()
-                                                else:
-                                                    print('** no instance '
-                                                          'found **')
-                                            else:
-                                                return super().default(line)
-                                else:
-                                    return super().default(line)
+                        else:
+                            return super().default(line)
+                    else:
+                        return super().default(line)
                 else:
                     return super().default(line)
+            else:
+                return super().default(line)
         else:
             return super().default(line)
 
