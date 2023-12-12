@@ -19,6 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
     cls_list = ['BaseModel', 'User', 'State', 'City',
                 'Amenity', 'Place', 'Review']
+    cls_methods = ['all']
 
     def preloop(self):
         """Hook method executed once when cmdloop() is called"""
@@ -28,6 +29,44 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """command to execute when an empty line is provided"""
         pass
+
+    def default(self, line):
+        """Method called when the command prefix is not recognize"""
+        trans_dict = line.maketrans({'(': '', ')': ''})
+        command = line.split(' ')
+        str_list = []
+
+        if len(command) == 1:
+            args_list = command[0].split('.')
+            cls = args_list[0]
+            if cls not in HBNBCommand.cls_list:
+                return super().default(line)
+            else:
+                if len(args_list) > 1:
+                    method = args_list[1].translate(trans_dict)
+                    if method not in HBNBCommand.cls_methods:
+                        return super().default(line)
+                    else:
+                        if len(args_list) == 2:
+                            if method == 'all':
+                                if args_list[1] == 'all()':
+                                    for key in storage.all().keys():
+                                        if cls in key:
+                                            str_list.append(
+                                                storage.all()[key].__str__())
+
+                                    print('[', end='')
+                                    for obj in str_list[:-1]:
+                                        print(obj, end='')
+                                        print(', ', end='')
+                                    print(str_list[-1], end='')
+                                    print(']')
+                                else:
+                                    return super().default(line)
+                else:
+                    return super().default(line)
+        else:
+            return super().default(line)
 
     def do_EOF(self, line):
         """EOF command to exit the program
