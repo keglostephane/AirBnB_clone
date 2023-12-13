@@ -32,12 +32,11 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Method called when the command prefix is not recognize"""
-        trans_table = line.maketrans('.(\",)', '     ')
+        trans_table = line.maketrans('.(\",){:}\'', '         ')
         str_list = []
         args_list = line.translate(trans_table).split()
         cls = args_list[0]
 
-        print(args_list)
         if cls in HBNBCommand.cls_list:
             if len(args_list) > 1:
                 method = args_list[1]
@@ -86,20 +85,35 @@ class HBNBCommand(cmd.Cmd):
                         if len(args_list) > 2:
                             cls_id = args_list[2]
                             if len(args_list) > 3:
-                                attr = args_list[3]
-                                if len(args_list) > 4:
-                                    value = args_list[4]
-                                    if len(args_list) == 5:
-                                        key = f"{cls}.{cls_id}"
-                                        objs_dict = storage.all()
-                                        if key in objs_dict.keys():
-                                            setattr(objs_dict[key], attr,
-                                                    value)
-                                            storage.save()
-                                        else:
-                                            print('** no instance found **')
+                                if '{' in line and '}' in line:
+                                    start = line.find('{')
+                                    end = line.find('}')
+                                    attrs_dict = eval(line[start:end+1])
+                                    key = f"{cls}.{cls_id}"
+                                    if key in storage.all().keys():
+                                        obj = storage.all()[key]
+                                        for k, v in attrs_dict.items():
+                                            setattr(obj, k, v)
+                                    else:
+                                        print('** no instance found **')
                                 else:
-                                    return super().default(line)
+                                    attr = args_list[3]
+                                    if len(args_list) > 4:
+                                        value = args_list[4]
+                                        if len(args_list) == 5:
+                                            key = f"{cls}.{cls_id}"
+                                            objs_dict = storage.all()
+                                            if key in objs_dict.keys():
+                                                setattr(objs_dict[key], attr,
+                                                        value)
+                                                storage.save()
+                                            else:
+                                                print('** no instance '
+                                                      'found **')
+                                        else:
+                                            return super().default(line)
+                                    else:
+                                        return super().default(line)
                             else:
                                 return super().default(line)
                         else:
